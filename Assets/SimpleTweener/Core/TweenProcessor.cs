@@ -2,46 +2,62 @@
 
 namespace SimpleTweener.Core
 {
-    public class TweenSystem
+    public class TweenProcessor
     {
-        private TweenSet[] _tweenSets;
+        private TweenGroup[] _tweenGroups;
         private bool[] _activeMask;
 
         private const int DefaultStartCapacity = 512;
 
-        public TweenSystem(int capacity)
+        public TweenProcessor(int capacity)
         {
-            _tweenSets = new TweenSet[capacity];
+            _tweenGroups = new TweenGroup[capacity];
             _activeMask = new bool[capacity];
         }
-        
-        public TweenSystem()
+
+        public TweenProcessor()
         {
-            _tweenSets = new TweenSet[DefaultStartCapacity];
+            _tweenGroups = new TweenGroup[DefaultStartCapacity];
             _activeMask = new bool[DefaultStartCapacity];
         }
 
         private void Extend()
         {
-            var newAnimations = new TweenSet[_tweenSets.Length * 2];
-            Array.Copy(_tweenSets, newAnimations, _tweenSets.Length);
-            _tweenSets = newAnimations;
+            var newGroups = new TweenGroup[_tweenGroups.Length * 2];
+            Array.Copy(_tweenGroups, newGroups, _tweenGroups.Length);
+            _tweenGroups = newGroups;
 
             var newMask = new bool[_activeMask.Length * 2];
             Array.Copy(_activeMask, newMask, _activeMask.Length);
             _activeMask = newMask;
         }
 
-        public void Add(TweenSet animation)
+        public void ApplyTweenGroup(TweenGroup tGroup)
         {
             var freeIndex = GetFreeIndex();
-            _tweenSets[freeIndex] = animation;
+            _tweenGroups[freeIndex] = tGroup;
             _activeMask[freeIndex] = true;
+        }
+
+        public T ApplyTween<T>(TweenSettings settings, TweenGroupPool pool = null) where T : ITween
+        {
+            if (pool == null)
+            {
+                pool = TweenGroupPool.Default;
+            }
+
+            var group = pool.GetTweenGroup(settings);
+            
+            ApplyTweenGroup(group);
+            
+            var tween = group.AddTween<T>();
+
+            return tween;
         }
 
         private int GetFreeIndex()
         {
-            for (int i = 0; i < _tweenSets.Length; i++)
+            for (int i = 0; i < _tweenGroups.Length; i++)
             {
                 if (!_activeMask[i])
                 {
@@ -49,7 +65,8 @@ namespace SimpleTweener.Core
                 }
             }
 
-            var nextFreeIndex = _tweenSets.Length;
+            var nextFreeIndex = _tweenGroups.Length;
+            
             Extend();
 
             return nextFreeIndex;
@@ -57,14 +74,14 @@ namespace SimpleTweener.Core
 
         public void Update(float deltaTime)
         {
-            for (int i = 0; i < _tweenSets.Length; i++)
+            for (int i = 0; i < _tweenGroups.Length; i++)
             {
                 if (!_activeMask[i])
                 {
                     continue;
                 }
 
-                ref var tweenSet = ref _tweenSets[i];
+                var tweenSet = _tweenGroups[i];
                 if (tweenSet is not {IsFinished: false})
                 {
                     _activeMask[i] = false;

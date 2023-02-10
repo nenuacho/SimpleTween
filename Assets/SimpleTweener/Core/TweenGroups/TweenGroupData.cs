@@ -1,6 +1,6 @@
 ﻿namespace SimpleTweener.Core
 {
-    internal struct TweenCommonData
+    internal struct TweenGroupData
     {
         private float _duration;
         private float _step;
@@ -11,7 +11,7 @@
         public float PlaybackTime;
         public bool CanAnimate;
 
-        public static TweenCommonData FromSettings(TweenCommonSettings settings) =>
+        public static TweenGroupData Map(TweenSettings settings) =>
             new()
             {
                 _lifeTime = 0,

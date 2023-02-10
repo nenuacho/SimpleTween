@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace SimpleTweener.TweenImpl
 {
-    public readonly struct FadeOutAnimation : ITween
+    public class FadeOutTween : ITween
     {
-        private readonly SpriteRenderer _renderer;
-        private readonly float _startAlpha;
-        private readonly float _endAlpha;
-
-        public FadeOutAnimation(SpriteRenderer renderer, float startAlpha, float endAlpha)
+        private SpriteRenderer _renderer;
+        private float _startAlpha;
+        private float _endAlpha;
+        
+        public void WithParameters(SpriteRenderer renderer, float startAlpha, float endAlpha)
         {
             _startAlpha = startAlpha;
             _endAlpha = endAlpha;
@@ -20,6 +20,8 @@ namespace SimpleTweener.TweenImpl
         {
             SetAlpha(Mathf.Lerp(_startAlpha, _endAlpha, time));
         }
+
+        public bool IsActive { get; set; }
 
         private void SetAlpha(float value)
         {

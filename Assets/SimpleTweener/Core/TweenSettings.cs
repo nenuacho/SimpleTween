@@ -1,16 +1,17 @@
 ﻿namespace SimpleTweener.Core
 {
-    public class TweenCommonSettings
+    public struct TweenSettings
     {
-        public float Duration { get; private set; }
+        public float Duration { get; }
         public float Delay { get; private set; }
 
-        public TweenCommonSettings(float duration)
+        public TweenSettings(float duration)
         {
             Duration = duration;
+            Delay = 0;
         }
 
-        public TweenCommonSettings WithDelay(float delay)
+        public TweenSettings WithDelay(float delay)
         {
             Delay = delay;
             return this;

@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace SimpleTweener.TweenImpl
 {
-    public readonly struct RotateAnimation : ITween
+    public class RotateTween : ITween
     {
-        private readonly Transform _transform;
-        private readonly Vector3 _targetEuler;
-        private readonly Vector3 _startEuler;
+        private Transform _transform;
+        private Vector3 _targetEuler;
+        private Vector3 _startEuler;
 
-        public RotateAnimation(Transform transform, Vector3 euler)
+        public void WithParameters(Transform transform, Vector3 euler)
         {
             _targetEuler = euler;
             _startEuler = transform.position;
@@ -20,5 +20,7 @@ namespace SimpleTweener.TweenImpl
         {
             _transform.eulerAngles = Vector3.Lerp(_startEuler, _targetEuler, time);
         }
+
+        public bool IsActive { get; set; }
     }
 }
