@@ -4,6 +4,7 @@
 
 * Fast and non-alloc
 * Scalable
+* Zero allocations
 * Engine agnostic
 * Easy API
 * Animations batching
