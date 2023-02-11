@@ -328,4 +328,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   examplePrefab: {fileID: 2388319751934990428, guid: 221eb28a913c6724db1d3c5a525252da, type: 3}
-  objectAmount: 30000
+  objectAmount: 50000

@@ -1,6 +1,8 @@
 ﻿using System;
+using Starbugs.SimpleTween.Core.Interfaces;
+using Starbugs.SimpleTween.Core.TweenGroups;
 
-namespace SimpleTweener.Core
+namespace Starbugs.SimpleTween.Core
 {
     public class TweenProcessor
     {

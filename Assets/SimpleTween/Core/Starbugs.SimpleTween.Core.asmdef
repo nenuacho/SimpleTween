@@ -1,9 +1,7 @@
 {
-    "name": "SimpleTweener.TweenImpl",
-    "rootNamespace": "",
-    "references": [
-        "GUID:f400a4e8c99c25a40a4e4b816274a5f6"
-    ],
+    "name": "Starbugs.SimpleTween.Core",
+    "rootNamespace": "Starbugs",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

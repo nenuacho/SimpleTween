@@ -1,4 +1,4 @@
-﻿namespace SimpleTweener.Core
+﻿namespace Starbugs.SimpleTween.Core.TweenGroups
 {
     internal struct TweenGroupData
     {

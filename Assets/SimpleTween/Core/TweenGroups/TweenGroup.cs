@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Starbugs.SimpleTween.Core.Interfaces;
 
-namespace SimpleTweener.Core
+namespace Starbugs.SimpleTween.Core.TweenGroups
 {
     public class TweenGroup
     {

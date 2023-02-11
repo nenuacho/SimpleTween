@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SimpleTweener.Core
+namespace Starbugs.SimpleTween.Core.TweenGroups
 {
     public class TweenGroupPool
     {

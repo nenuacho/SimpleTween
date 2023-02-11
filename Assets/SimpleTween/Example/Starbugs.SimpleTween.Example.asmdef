@@ -1,6 +1,6 @@
 {
-    "name": "SimpleTweener.Example",
-    "rootNamespace": "",
+    "name": "Starbugs.SimpleTween.Example",
+    "rootNamespace": "Starbugs",
     "references": [
         "GUID:f400a4e8c99c25a40a4e4b816274a5f6",
         "GUID:33e3d816851cb694286633d88547462c",

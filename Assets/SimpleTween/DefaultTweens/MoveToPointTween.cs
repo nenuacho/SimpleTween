@@ -1,7 +1,7 @@
-﻿using SimpleTweener.Core;
+﻿using Starbugs.SimpleTween.Core.Interfaces;
 using UnityEngine;
 
-namespace SimpleTweener.TweenImpl
+namespace SimpleTween.DefaultTweens
 {
     public class MoveToPointTween : ITween
     {
