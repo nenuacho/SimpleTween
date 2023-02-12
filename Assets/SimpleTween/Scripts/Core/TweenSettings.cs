@@ -1,4 +1,4 @@
-﻿namespace Starbugs.SimpleTween.Core
+﻿namespace Starbugs.SimpleTween.Scripts.Core
 {
     public struct TweenSettings
     {

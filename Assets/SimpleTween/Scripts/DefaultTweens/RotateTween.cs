@@ -1,7 +1,7 @@
-﻿using Starbugs.SimpleTween.Core.Interfaces;
+﻿using Starbugs.SimpleTween.Scripts.Core.Interfaces;
 using UnityEngine;
 
-namespace SimpleTween.DefaultTweens
+namespace Starbugs.SimpleTween.Scripts.DefaultTweens
 {
     public class RotateTween : ITween
     {

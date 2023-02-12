@@ -1,7 +1,7 @@
-﻿using Starbugs.SimpleTween.Core.Interfaces;
+﻿using Starbugs.SimpleTween.Scripts.Core.Interfaces;
 using UnityEngine;
 
-namespace SimpleTween.DefaultTweens
+namespace Starbugs.SimpleTween.Scripts.DefaultTweens
 {
     public class ScaleToZeroTween : ITween
     {
@@ -11,6 +11,7 @@ namespace SimpleTween.DefaultTweens
         public void UpdatePlaybackTime(float time)
         {
             _transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, time);
+            
         }
         
         public void WithParameters(Transform transform)

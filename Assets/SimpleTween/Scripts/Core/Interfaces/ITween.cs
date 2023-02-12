@@ -1,4 +1,4 @@
-﻿namespace Starbugs.SimpleTween.Core.Interfaces
+﻿namespace Starbugs.SimpleTween.Scripts.Core.Interfaces
 {
     public interface ITween
     {

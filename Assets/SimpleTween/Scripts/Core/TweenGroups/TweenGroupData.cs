@@ -1,13 +1,10 @@
-﻿namespace Starbugs.SimpleTween.Core.TweenGroups
+﻿namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
 {
     internal struct TweenGroupData
     {
-        private float _duration;
         private float _step;
         private float _delay;
         private float _lifeTime;
-        
-        public bool IsFinished;
         public float PlaybackTime;
         public bool CanAnimate;
 
@@ -15,7 +12,6 @@
             new()
             {
                 _lifeTime = 0,
-                _duration = settings.Duration,
                 _step = 1 / settings.Duration,
                 _delay = settings.Delay
             };
@@ -33,11 +29,6 @@
             _lifeTime += deltaTime;
 
             PlaybackTime = _lifeTime * _step;
-
-            if (_lifeTime >= _duration)
-            {
-                IsFinished = true;
-            }
         }
     }
 }

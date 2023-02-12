@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Starbugs.SimpleTween.Example
+namespace Starbugs.SimpleTween.Scripts.Example
 {
     public class ViewExample : MonoBehaviour
     {

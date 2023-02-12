@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using SimpleTween.DefaultTweens;
-using Starbugs.SimpleTween.Core;
-using Starbugs.SimpleTween.Core.TweenGroups;
+using Starbugs.SimpleTween.Scripts.Core;
+using Starbugs.SimpleTween.Scripts.Core.TweenGroups;
+using Starbugs.SimpleTween.Scripts.DefaultTweens;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Starbugs.SimpleTween.Example
+namespace Starbugs.SimpleTween.Scripts.Example
 {
     public class SimpleTweenExample : MonoBehaviour
     {
@@ -13,13 +13,16 @@ namespace Starbugs.SimpleTween.Example
         [field: SerializeField] private int objectAmount = 10000;
 
 
-        private readonly TweenProcessor _tweenProcessor = new();
-        private readonly List<ViewExample> _viewPool = new();
+        private TweenProcessor _tweenProcessor;
+        private List<ViewExample> _viewPool;
 
         private int _currentViewIndex;
 
         private void Start()
         {
+            _tweenProcessor = new();
+            _viewPool = new();
+
             for (int i = 0; i < objectAmount; i++)
             {
                 var instance = Instantiate(examplePrefab);
@@ -33,7 +36,7 @@ namespace Starbugs.SimpleTween.Example
 
         private void FixedUpdate()
         {
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 30; i++)
             {
                 Animate();
             }
@@ -55,27 +58,24 @@ namespace Starbugs.SimpleTween.Example
 
                 var duration = Random.Range(1f, 5f);
                 var delay = Random.Range(1f, 2f);
-                
+                delay = 0;
+                //   duration = 5;
+
                 // Single animation
                 _tweenProcessor
-                    .ApplyTween<ScaleToZeroTween>(new TweenSettings(duration: 10f))
+                    .ApplyTween<ScaleToZeroTween>(new TweenSettings(duration: duration))
                     .WithParameters(view.Transform);
-                
+
 
                 // Batch animation
-                var tweenGroup = TweenGroupPool.Default.GetTweenGroup(new TweenSettings(duration).WithDelay(delay));
+                var tweenGroup = _tweenProcessor.GetTweenGroup(new TweenSettings(duration).WithDelay(delay));
                 tweenGroup.AddTween<MoveToPointTween>().WithParameters(view.Transform, movePosition);
                 tweenGroup.AddTween<RotateTween>().WithParameters(view.Transform, targetEuler);
-                tweenGroup.AddTween<FadeOutTween>().WithParameters(view.SpriteRenderer, 1, 0);
-                tweenGroup.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
+                tweenGroup.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 0, 1);
+              //  tweenGroup.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
                 tweenGroup.AddTween<SetActiveTween>().WithParameters(view.gameObject);
                 _tweenProcessor.ApplyTweenGroup(tweenGroup);
 
-
-                //
-                // _tweenProcessor
-                //     .ApplyTween<FadeOutTween>(new TweenSettings(duration: 10f).WithDelay(5f))
-                //     .WithParameters(view.SpriteRenderer, startAlpha: view.SpriteRenderer.color.a, endAlpha: 0);
 
                 _currentViewIndex++;
             }

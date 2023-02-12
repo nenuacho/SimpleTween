@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Starbugs.SimpleTween.Core.Interfaces;
+using Starbugs.SimpleTween.Scripts.Core.Interfaces;
 
-namespace Starbugs.SimpleTween.Core.TweenGroups
+namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
 {
     public class TweenGroup
     {
         private readonly Dictionary<Type, ITween> _tweenCache;
         private TweenGroupData _data;
 
-        public bool IsFinished => _data.IsFinished;
+        public bool IsRunning;
 
         public TweenGroup()
         {
@@ -24,7 +24,7 @@ namespace Starbugs.SimpleTween.Core.TweenGroups
             }
         }
 
-        internal TweenGroup WithData(TweenGroupData data)
+        internal TweenGroup WithData(ref TweenGroupData data)
         {
             ResetActives();
             _data = data;
@@ -49,6 +49,8 @@ namespace Starbugs.SimpleTween.Core.TweenGroups
 
             anim.IsActive = true;
 
+            IsRunning = true;
+
             return anim;
         }
 
@@ -67,6 +69,11 @@ namespace Starbugs.SimpleTween.Core.TweenGroups
                 {
                     animation.UpdatePlaybackTime(_data.PlaybackTime);
                 }
+            }
+
+            if (_data.PlaybackTime >= 1)
+            {
+                IsRunning = false;
             }
         }
     }

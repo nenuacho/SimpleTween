@@ -1,21 +1,15 @@
 ﻿using System;
-using Starbugs.SimpleTween.Core.Interfaces;
-using Starbugs.SimpleTween.Core.TweenGroups;
+using Starbugs.SimpleTween.Scripts.Core.Interfaces;
+using Starbugs.SimpleTween.Scripts.Core.TweenGroups;
 
-namespace Starbugs.SimpleTween.Core
+namespace Starbugs.SimpleTween.Scripts.Core
 {
     public class TweenProcessor
     {
         private TweenGroup[] _tweenGroups;
         private bool[] _activeMask;
 
-        private const int DefaultStartCapacity = 512;
-
-        public TweenProcessor(int capacity)
-        {
-            _tweenGroups = new TweenGroup[capacity];
-            _activeMask = new bool[capacity];
-        }
+        private const int DefaultStartCapacity = 1024;
 
         public TweenProcessor()
         {
@@ -41,20 +35,20 @@ namespace Starbugs.SimpleTween.Core
             _activeMask[freeIndex] = true;
         }
 
-        public T ApplyTween<T>(TweenSettings settings, TweenGroupPool pool = null) where T : ITween
+        public T ApplyTween<T>(TweenSettings settings) where T : ITween
         {
-            if (pool == null)
-            {
-                pool = TweenGroupPool.Default;
-            }
-
-            var group = pool.GetTweenGroup(settings);
-            
-            ApplyTweenGroup(group);
-            
+            var group = GetTweenGroup(settings);
             var tween = group.AddTween<T>();
-
+            ApplyTweenGroup(group);
             return tween;
+        }
+
+        public TweenGroup GetTweenGroup(TweenSettings settings)
+        {
+            var data = TweenGroupData.Map(settings);
+            var freeIndex = GetFreeIndex();
+            var tGroup = _tweenGroups[freeIndex] ??= new TweenGroup();
+            return tGroup.WithData(ref data);
         }
 
         private int GetFreeIndex()
@@ -68,7 +62,7 @@ namespace Starbugs.SimpleTween.Core
             }
 
             var nextFreeIndex = _tweenGroups.Length;
-            
+
             Extend();
 
             return nextFreeIndex;
@@ -84,7 +78,7 @@ namespace Starbugs.SimpleTween.Core
                 }
 
                 var tweenSet = _tweenGroups[i];
-                if (tweenSet is not {IsFinished: false})
+                if (tweenSet is not {IsRunning: true})
                 {
                     _activeMask[i] = false;
                     continue;

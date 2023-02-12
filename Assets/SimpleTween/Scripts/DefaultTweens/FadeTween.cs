@@ -1,9 +1,9 @@
-﻿using Starbugs.SimpleTween.Core.Interfaces;
+﻿using Starbugs.SimpleTween.Scripts.Core.Interfaces;
 using UnityEngine;
 
-namespace SimpleTween.DefaultTweens
+namespace Starbugs.SimpleTween.Scripts.DefaultTweens
 {
-    public class FadeOutTween : ITween
+    public class FadeTween : ITween
     {
         private SpriteRenderer _renderer;
         private float _startAlpha;
