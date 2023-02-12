@@ -34,24 +34,16 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
         public T AddTween<T>() where T : ITween
         {
             var type = typeof(T);
-            T anim;
-
-            if (_tweenCache.ContainsKey(type))
+            if(!_tweenCache.TryGetValue(type, out var tween))
             {
-                anim = (T)_tweenCache[type];
-            }
-            else
-            {
-                var newTween = Activator.CreateInstance<T>();
-                _tweenCache.Add(type, newTween);
-                anim = newTween;
+                tween = Activator.CreateInstance<T>();
+                _tweenCache.Add(type, tween);
             }
 
-            anim.IsActive = true;
-
+            tween.IsActive = true;
             IsRunning = true;
+            return (T)tween;
 
-            return anim;
         }
 
         public void Update(float deltaTime)
