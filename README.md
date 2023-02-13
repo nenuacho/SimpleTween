@@ -1,34 +1,16 @@
-# SimpleTweener #
+# SimpleTween #
+
+![Alt text](https://bitbucket.org/privatevoid/simpletweener/raw/8a43db63846c3510f484e8ddc1a3b39d106c7fc1/demo.gif)
+
 
 ### Lightweight animation engine ###
 
 * Fast and non-alloc
 * Scalable
-* Zero allocations
 * Engine agnostic
 * Easy API
 * Animations batching
 
-
-
-
-
----
-## Performance ##
-
-Tested in Unity2022 with 10000 animated objects on scene
-<br/>
-<br/>
-Test1: every object has 1 movement animation
-<br/>
-Test2: every object has 3 animations at time - movement, rotation, fadeout
-<br/>
-
-|              | Test1 (ms) | Test2 (ms)|
-|------------- | ------------|--------------|
-|Coroutines    | 32.25        |109.49         |
-|DOTween       | 23.95        |80.77          |
-|SimpleTweener | 11.68        |34.74          |
 
 ---
 
@@ -36,71 +18,84 @@ Test2: every object has 3 animations at time - movement, rotation, fadeout
 
 ## API ##
 <br/>
-### Init and start animation ###
+### Single animation ###
 ---------------------------------------
 ```csharp
 
 public void StartAnimation()
 {
-	tweener.Do(TweenSet
-				   .WithSettings(new TweenCommonSettings(duration).WithDelay(delay))
-				   .WithAnimation(new RotateAnimation(instanceTransform, targetEuler)));
+    _tweenProcessor
+        .ApplyTween<MoveToPointTween>(new TweenSettings(duration: 20).WithDelay(1))
+        .WithParameters(view.Transform, view.Transform.position + Vector3.right * 10f);
 }
 ```
 <br/>
 ------------------------------------------
 <br/>
 ### Batch animations ###
+#### If you have multiple animations with same settings (Duration and Delay) it's recommended to use TweenGroup ####
 ---------------------------------------
 ```csharp
 
 public void StartAnimation()
 {
-	tweener.Do(TweenSet
-				   .WithSettings(new TweenCommonSettings(duration).WithDelay(delay))
-				   .WithAnimation(new FadeOutAnimation(instanceRenderer, 1, 0))
-				   .WithAnimation(new MoveAnimation(instanceTransform, movePosition))
-				   .WithAnimation(new RotateAnimation(instanceTransform, targetEuler)));
+    var tweenGroup = _tweenProcessor
+        .ApplyTweenGroup()
+        .WithSettings(new TweenSettings(duration).WithDelay(delay));
+
+    tweenGroup.AddTween<MoveToPointTween>().WithParameters(view.Transform, movePosition);
+    tweenGroup.AddTween<RotateTween>().WithParameters(view.Transform, targetEuler);
+    tweenGroup.AddTween<ChangeColorTween>().WithParameters(view.SpriteRenderer, new Color(1f,0.7f,0.7f), new Color(0.5f,0f,0f));
+    tweenGroup.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 0, 1);
+    tweenGroup.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
+    tweenGroup.AddTween<SetActiveTween>().WithParameters(view.gameObject);
 }
 ```
 <br/>
 ---------------
 <br/>
-### You can create your own animation ###
+### Custom animations ###
 ------------
 ```csharp
 
-public readonly struct MyScaleAnimation : ITween
-{
-    private readonly Transform _transform;
-    private readonly Vector3 _startScale;
-
-    public MyScaleAnimation(Transform transform)
+    public class MyMoveToPointTween : ITween
     {
-        _startScale = transform.localScale;
-        _transform = transform;
-    }
+        private Transform _transform;
+        private Vector3 _targetPosition;
+        private Vector3 _startPosition;
 
-    public void UpdatePlaybackTime(float time)
-    {
-        _transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, time);
+        public void UpdatePlaybackTime(float time)
+        {
+            _transform.position = Vector3.Lerp(_startPosition, _targetPosition, time);
+        }
+
+        public bool IsActive { get; set; }
+
+        public void WithParameters(Transform transform, Vector3 targetPosition)
+        {
+            _targetPosition = targetPosition;
+            _startPosition = transform.position;
+            _transform = transform;
+        }
     }
-}
 ```
 
 ---------------
 <br/>
-### And just add it to the tween set ###
 ------------
 ```csharp
 
 public void StartAnimation()
 {
-    tweener.Do(TweenSet
-                   .WithSettings(new TweenCommonSettings(duration).WithDelay(delay))
-                   .WithAnimation(new FadeOutAnimation(instanceRenderer, 1, 0))
-                   .WithAnimation(new MoveAnimation(instanceTransform, movePosition))
-                   .WithAnimation(new RotateAnimation(instanceTransform, targetEuler))
-                   .WithAnimation(new MyScaleAnimation(instanceTransform)));
+    var tweenGroup = _tweenProcessor
+        .ApplyTweenGroup()
+        .WithSettings(new TweenSettings(duration).WithDelay(delay));
+
+    tweenGroup.AddTween<MyMoveToPointTween>().WithParameters(view.Transform, movePosition);
 }
 ```
+------------
+<br/>
+------------
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
