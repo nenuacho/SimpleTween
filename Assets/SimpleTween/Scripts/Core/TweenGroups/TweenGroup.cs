@@ -24,11 +24,17 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
             }
         }
 
-        internal TweenGroup WithData(ref TweenGroupData data)
+        private TweenGroup WithData(ref TweenGroupData data)
         {
             ResetActives();
             _data = data;
             return this;
+        }
+
+        public TweenGroup WithSettings(TweenSettings settings)
+        {
+            var data = TweenGroupData.Map(settings);
+            return WithData(ref data);
         }
 
         public T AddTween<T>() where T : ITween

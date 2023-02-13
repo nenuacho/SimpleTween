@@ -9,11 +9,16 @@ namespace Starbugs.SimpleTween.Scripts.Core
         private TweenGroup[] _tweenGroups;
         private bool[] _activeMask;
 
-        private const int DefaultStartCapacity = 1024;
+        private const int DefaultStartCapacity = 1024 * 8;
 
         public TweenProcessor()
         {
             _tweenGroups = new TweenGroup[DefaultStartCapacity];
+            for (int i = 0; i < _tweenGroups.Length; i++)
+            {
+                _tweenGroups[i] = new TweenGroup();
+            }
+
             _activeMask = new bool[DefaultStartCapacity];
         }
 
@@ -28,27 +33,19 @@ namespace Starbugs.SimpleTween.Scripts.Core
             _activeMask = newMask;
         }
 
-        public void ApplyTweenGroup(TweenGroup tGroup)
-        {
-            var freeIndex = GetFreeIndex();
-            _tweenGroups[freeIndex] = tGroup;
-            _activeMask[freeIndex] = true;
-        }
-
         public T ApplyTween<T>(TweenSettings settings) where T : ITween
         {
-            var group = GetTweenGroup(settings);
-            var tween = group.AddTween<T>();
-            ApplyTweenGroup(group);
-            return tween;
+            var tweenGroup = ApplyTweenGroup().WithSettings(settings);
+            var tween = tweenGroup.AddTween<T>();
+            return (T)tween;
         }
 
-        public TweenGroup GetTweenGroup(TweenSettings settings)
+        public TweenGroup ApplyTweenGroup()
         {
-            var data = TweenGroupData.Map(settings);
             var freeIndex = GetFreeIndex();
             var tGroup = _tweenGroups[freeIndex] ??= new TweenGroup();
-            return tGroup.WithData(ref data);
+            _activeMask[freeIndex] = true;
+            return tGroup;
         }
 
         private int GetFreeIndex()
