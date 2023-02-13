@@ -1,6 +1,6 @@
 # SimpleTween #
 
-![Alt text](https://bitbucket.org/privatevoid/simpletweener/raw/8a43db63846c3510f484e8ddc1a3b39d106c7fc1/demo.gif)
+![Alt text](https://bitbucket.org/privatevoid/simpletweener/raw/51cd3377d01e5275740f9ea5e60ded7bb46000d7/demo.gif)
 
 
 ### Lightweight animation engine ###
