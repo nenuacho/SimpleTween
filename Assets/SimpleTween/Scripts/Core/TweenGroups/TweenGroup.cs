@@ -37,12 +37,12 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
             return WithData(ref data);
         }
 
-        public T AddTween<T>() where T : ITween
+        public T AddTween<T>() where T : ITween, new()
         {
             var type = typeof(T);
             if(!_tweenCache.TryGetValue(type, out var tween))
             {
-                tween = Activator.CreateInstance<T>();
+                tween = new T();
                 _tweenCache.Add(type, tween);
             }
 

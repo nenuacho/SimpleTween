@@ -30,12 +30,16 @@ namespace Starbugs.SimpleTween.Scripts.Example
                 instance.gameObject.SetActive(false);
                 _viewPool.Add(instance);
             }
+            
+            _tweenProcessor
+                .ApplyTween<CameraColorTween>(new TweenSettings(duration: 20))
+                .WithParameters(Camera.main, Color.white, new Color(1f,0.4f,0.4f));
         }
 
 
         private void FixedUpdate()
         {
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 50; i++)
             {
                 Animate();
             }
@@ -44,6 +48,8 @@ namespace Starbugs.SimpleTween.Scripts.Example
         private void Update()
         {
             _tweenProcessor.Update(Time.deltaTime);
+            
+
         }
 
         private void Animate()

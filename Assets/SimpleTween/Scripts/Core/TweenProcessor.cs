@@ -33,12 +33,7 @@ namespace Starbugs.SimpleTween.Scripts.Core
             _activeMask = newMask;
         }
 
-        public T ApplyTween<T>(TweenSettings settings) where T : ITween
-        {
-            var tweenGroup = ApplyTweenGroup().WithSettings(settings);
-            var tween = tweenGroup.AddTween<T>();
-            return (T)tween;
-        }
+        public T ApplyTween<T>(TweenSettings settings) where T : ITween, new() => ApplyTweenGroup().WithSettings(settings).AddTween<T>();
 
         public TweenGroup ApplyTweenGroup()
         {
