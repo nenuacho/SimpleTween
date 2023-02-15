@@ -26,6 +26,7 @@ namespace Starbugs.SimpleTween.Scripts.Example
                 var instance = Instantiate(examplePrefab);
                 instance.transform.position = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * Random.Range(0f, 25f);
                 instance.transform.eulerAngles = new Vector3(0, 0, Random.Range(0f, 360f));
+                instance.transform.localScale = new Vector3(Random.Range(1f, 4f), Random.Range(1f, 4f), 1f);
                 instance.gameObject.SetActive(false);
                 _viewPool.Add(instance);
             }
@@ -65,10 +66,11 @@ namespace Starbugs.SimpleTween.Scripts.Example
                 // Batch animation
                 var tweenGroup = _tweenProcessor
                     .ApplyTweenGroup()
-                    .WithSettings(new TweenSettings(duration).WithDelay(delay));
+                    .WithSettings(new TweenSettings(duration).WithDelay(0));
 
                 tweenGroup.AddTween<MoveToPointTween>().WithParameters(view.Transform, movePosition);
                 tweenGroup.AddTween<RotateTween>().WithParameters(view.Transform, targetEuler);
+                tweenGroup.AddTween<ChangeColorTween>().WithParameters(view.SpriteRenderer, new Color(1f,0.7f,0.7f), new Color(0.5f,0f,0f));
                 tweenGroup.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 0, 1);
                 tweenGroup.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
                 tweenGroup.AddTween<SetActiveTween>().WithParameters(view.gameObject);
