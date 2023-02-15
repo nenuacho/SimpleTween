@@ -61,11 +61,11 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
                 return;
             }
 
-            foreach (var animation in _tweenCache.Values)
+            foreach (var tween in _tweenCache.Values)
             {
-                if (animation.IsActive)
+                if (tween.IsActive)
                 {
-                    animation.UpdatePlaybackTime(_data.PlaybackTime);
+                    tween.UpdatePlaybackTime(_data.PlaybackTime);
                 }
             }
 

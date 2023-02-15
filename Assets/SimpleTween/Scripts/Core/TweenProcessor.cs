@@ -74,14 +74,14 @@ namespace Starbugs.SimpleTween.Scripts.Core
                     continue;
                 }
 
-                var tweenSet = _tweenGroups[i];
-                if (tweenSet is not {IsRunning: true})
+                var tweenGroup = _tweenGroups[i];
+                if (tweenGroup is not {IsRunning: true})
                 {
                     _activeMask[i] = false;
                     continue;
                 }
 
-                tweenSet.Update(deltaTime);
+                tweenGroup.Update(deltaTime);
             }
         }
     };
