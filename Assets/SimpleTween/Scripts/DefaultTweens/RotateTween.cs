@@ -12,7 +12,7 @@ namespace Starbugs.SimpleTween.Scripts.DefaultTweens
         public void WithParameters(Transform transform, Vector3 euler)
         {
             _targetEuler = euler;
-            _startEuler = transform.position;
+            _startEuler = transform.eulerAngles;
             _transform = transform;
         }
 

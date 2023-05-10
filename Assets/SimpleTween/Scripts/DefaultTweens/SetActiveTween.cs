@@ -8,10 +8,17 @@ namespace Starbugs.SimpleTween.Scripts.DefaultTweens
         private GameObject _go;
         private Vector3 _targetPosition;
         private Vector3 _startPosition;
+        private bool _needToSet;
 
         public void UpdatePlaybackTime(float time)
         {
-            _go.SetActive(time is > 0 and < 1);
+            if (!_needToSet)
+            {
+                return;
+            }
+
+            _go.SetActive(true);
+            _needToSet = false;
         }
 
         public bool IsActive { get; set; }
@@ -19,6 +26,7 @@ namespace Starbugs.SimpleTween.Scripts.DefaultTweens
         public void WithParameters(GameObject go)
         {
             _go = go;
+            _needToSet = true;
         }
     }
 }

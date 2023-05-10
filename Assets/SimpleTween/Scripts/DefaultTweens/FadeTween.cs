@@ -30,4 +30,5 @@ namespace Starbugs.SimpleTween.Scripts.DefaultTweens
             _renderer.color = tempColor;
         }
     }
+    
 }

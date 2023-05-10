@@ -8,6 +8,7 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
     {
         private readonly Dictionary<Type, ITween> _tweenCache;
         private TweenGroupData _data;
+        private Action _callback;
 
         public bool IsRunning;
 
@@ -35,6 +36,12 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
         {
             var data = TweenGroupData.Map(settings);
             return WithData(ref data);
+        }
+
+        public TweenGroup WithCallback(Action callback)
+        {
+            _callback = callback;
+            return this;
         }
 
         public T AddTween<T>() where T : ITween, new()
@@ -72,6 +79,7 @@ namespace Starbugs.SimpleTween.Scripts.Core.TweenGroups
             if (_data.PlaybackTime >= 1)
             {
                 IsRunning = false;
+                _callback?.Invoke();
             }
         }
     }

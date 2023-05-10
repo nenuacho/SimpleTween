@@ -9,7 +9,7 @@ namespace Starbugs.SimpleTween.Scripts.Example
     public class SimpleTweenExample : MonoBehaviour
     {
         [field: SerializeField] private ViewExample examplePrefab;
-        [field: SerializeField] private int objectAmount = 10000;
+        [field: SerializeField] private int objectAmount = 1000;
 
         private TweenProcessor _tweenProcessor;
         private List<ViewExample> _viewPool;
@@ -30,10 +30,10 @@ namespace Starbugs.SimpleTween.Scripts.Example
                 instance.gameObject.SetActive(false);
                 _viewPool.Add(instance);
             }
-            
+
             _tweenProcessor
                 .ApplyTween<CameraColorTween>(new TweenSettings(duration: 20))
-                .WithParameters(Camera.main, Color.white, new Color(1f,0.4f,0.4f));
+                .WithParameters(Camera.main, Color.white, new Color(1f, 0.4f, 0.4f));
         }
 
 
@@ -48,8 +48,6 @@ namespace Starbugs.SimpleTween.Scripts.Example
         private void Update()
         {
             _tweenProcessor.Update(Time.deltaTime);
-            
-
         }
 
         private void Animate()
@@ -64,22 +62,52 @@ namespace Starbugs.SimpleTween.Scripts.Example
                 var duration = Random.Range(1f, 5f);
                 var delay = Random.Range(1f, 2f);
 
+                // -------------------------------------------------------------------------------------------------
                 // Single animation
                 // _tweenProcessor
                 //     .ApplyTween<MoveToPointTween>(new TweenSettings(duration: 20).WithDelay(1))
                 //     .WithParameters(view.Transform, view.Transform.position + Vector3.right * 10f);
 
+                
+                // -------------------------------------------------------------------------------------------------
                 // Batch animation
                 var tweenGroup = _tweenProcessor
                     .ApplyTweenGroup()
                     .WithSettings(new TweenSettings(duration).WithDelay(0));
-
+                
+                
                 tweenGroup.AddTween<MoveToPointTween>().WithParameters(view.Transform, movePosition);
                 tweenGroup.AddTween<RotateTween>().WithParameters(view.Transform, targetEuler);
                 tweenGroup.AddTween<ChangeColorTween>().WithParameters(view.SpriteRenderer, new Color(1f,0.7f,0.7f), new Color(0.5f,0f,0f));
                 tweenGroup.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 0, 1);
                 tweenGroup.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
                 tweenGroup.AddTween<SetActiveTween>().WithParameters(view.gameObject);
+
+                
+                // -------------------------------------------------------------------------------------------------
+                // Chaining
+                // var tweenGroup = _tweenProcessor
+                //     .ApplyTweenGroup()
+                //     .WithCallback(() =>
+                //     {
+                //         var tweenGroup2 = _tweenProcessor
+                //             .ApplyTweenGroup()
+                //             .WithCallback(() => view.gameObject.SetActive(false))
+                //             .WithSettings(new TweenSettings(duration));
+                //
+                //         tweenGroup2.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 1, 0);
+                //         tweenGroup2.AddTween<RotateTween>().WithParameters(view.Transform, targetEuler);
+                //         tweenGroup2.AddTween<ScaleToZeroTween>().WithParameters(view.Transform);
+                //     })
+                //     .WithSettings(new TweenSettings(duration).WithDelay(0));
+                //
+                //
+                // tweenGroup.AddTween<MoveToPointTween>().WithParameters(view.Transform, movePosition);
+                // tweenGroup.AddTween<ChangeColorTween>().WithParameters(view.SpriteRenderer, new Color(1f, 0.7f, 0.7f), new Color(0.5f, 0f, 0f));
+                // tweenGroup.AddTween<FadeTween>().WithParameters(view.SpriteRenderer, 0, 1);
+                // tweenGroup.AddTween<SetActiveTween>().WithParameters(view.gameObject);
+
+
                 _currentViewIndex++;
             }
         }
