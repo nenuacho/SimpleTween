@@ -10,6 +10,7 @@
 * Engine agnostic
 * Easy API
 * Animations batching
+* Easing friendly
 
 
 ---
